@@ -1,5 +1,7 @@
 package br.com.samplegroup.dao
 
+import com.google.gson.Gson
+import com.mongodb.BasicDBObject
 import com.mongodb.DB
 import com.mongodb.MongoClient
 import com.mongodb.MongoClientURI
@@ -22,8 +24,13 @@ class DBConnector {
         } else {
             def cred = new MongoCredential("PLAIN", user, "todoapp", psw.toCharArray())
             def server = new ServerAddress(host,port)
-            def mongo = new MongoClient(server,Arrays.asList(cred))
+            this.db = new MongoClient(server,Arrays.asList(cred))
         }
     }
 
+    BasicDBObject toBasicDBObject(Object object) {
+        def gson = new Gson()
+        def map = gson.fromJson(gson.toJson(object), HashMap.class)
+        return new BasicDBObject(map)
+    }
 }
