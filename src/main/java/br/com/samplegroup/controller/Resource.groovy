@@ -1,8 +1,8 @@
 package br.com.samplegroup.controller
 
-interface Resource {
+abstract class Resource {
 
-    String json = ""
+    String APP_JSON = "application/json"
 
     abstract setup()
 
