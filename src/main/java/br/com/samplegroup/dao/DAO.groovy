@@ -12,7 +12,8 @@ import com.mongodb.WriteConcern
 
 abstract class DAO {
 
-    DB db
+    private DB db
+
 
     DAO() {
         def url = System.getenv("DB_URL")
@@ -35,7 +36,7 @@ abstract class DAO {
      * Transform any object into an BasicDBObject
      *
      * @param object
-     * @return
+     * @return BasicDBObject - The mongoDB document
      */
     BasicDBObject toBasicDBObject(Object object) {
         def gson = new Gson()
