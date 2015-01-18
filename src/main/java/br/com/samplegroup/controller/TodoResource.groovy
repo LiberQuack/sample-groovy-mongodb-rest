@@ -1,10 +1,15 @@
 package br.com.samplegroup.controller
 
+import br.com.samplegroup.dao.TodoDao
+import br.com.samplegroup.model.Todo
+import com.google.gson.Gson
+
 import static spark.Spark.*
 
 class TodoResource extends Resource {
 
-    private final String CONTEXT = "/api/v1/todos"
+    final String CONTEXT = "/api/v1/todos"
+    final TodoDao todoDao = new TodoDao()
 
     @Override
     def setup() {
@@ -17,7 +22,10 @@ class TodoResource extends Resource {
         })
 
         post("${CONTEXT}", APP_JSON, { req, res ->
-
+            res.status(201)
+            res.type(APP_JSON)
+            def todo = new Gson().fromJson(req.body(), Todo.class)
+            todoDao.insert(todo)
         })
 
         put("${CONTEXT}/:id", APP_JSON, { req, res ->

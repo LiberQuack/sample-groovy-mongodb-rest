@@ -15,6 +15,8 @@ class TodoDao extends DAO{
     Object insert(Object obj) {
         def doc = toBasicDBObject(obj)
         collection.insert(doc)
+        println doc.toString()
+        doc
     }
 
     @Override
