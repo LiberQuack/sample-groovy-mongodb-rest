@@ -19,23 +19,18 @@ class TodoDao extends DAO {
     }
 
     @Override
-    Object find(Object obj) {
-        return null
-    }
-
-    @Override
-    Object findAll() {
+    Object find() {
         def docs = collection.find()
         new Gson().toJson(docs)
     }
 
     @Override
-    Object remove(Object obj) {
+    Object find(Object obj) {
         return null
     }
 
     @Override
-    Object findAndRemove(Object obj) {
+    Object remove(Object obj) {
         return null
     }
 }

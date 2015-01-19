@@ -17,7 +17,7 @@ class TodoResource extends Resource {
         get("${CONTEXT}", APP_JSON, { req, res ->
             res.status(201)
             res.type(APP_JSON)
-            todoDao.findAll()
+            todoDao.find()
         })
 
         get("${CONTEXT}/:id", APP_JSON, { req, res ->

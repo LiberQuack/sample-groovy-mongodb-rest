@@ -7,17 +7,10 @@ abstract class DAO {
 
     Jongo db
 
-
     abstract Object find(obj)
-
-    abstract Object findAll()
-
+    abstract Object find()
     abstract Object remove(obj)
-
-    abstract Object findAndRemove(obj)
-
     abstract Object save(obj)
-
 
     DAO() {
         DB mongDB
