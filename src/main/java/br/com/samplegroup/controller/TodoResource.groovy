@@ -27,7 +27,7 @@ class TodoResource extends Resource {
             res.status(201)
             res.type(APP_JSON)
             def todo = new Gson().fromJson(req.body(), Todo.class)
-            def result = todoDao.insert(todo)
+            def result = todoDao.save(todo)
             new Gson().toJson(result)
         })
 

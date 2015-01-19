@@ -13,7 +13,7 @@ class TodoDao extends DAO {
     }
 
     @Override
-    Object insert(Object obj) {
+    Object save(Object obj) {
         collection.save(obj)
         return obj
     }
@@ -36,11 +36,6 @@ class TodoDao extends DAO {
 
     @Override
     Object findAndRemove(Object obj) {
-        return null
-    }
-
-    @Override
-    Object update(Object obj) {
         return null
     }
 }
