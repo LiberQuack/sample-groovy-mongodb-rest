@@ -1,11 +1,11 @@
 package br.com.samplegroup.dao
 
 import com.google.gson.Gson
-import com.mongodb.DBCollection
+import org.jongo.MongoCollection
 
-class TodoDao extends DAO{
+class TodoDao extends DAO {
 
-    DBCollection collection
+    MongoCollection collection
 
     TodoDao() {
         super()
@@ -14,9 +14,8 @@ class TodoDao extends DAO{
 
     @Override
     Object insert(Object obj) {
-        def doc = toBasicDBObject(obj)
-        collection.insert(doc)
-        doc.toString()
+        collection.save(obj)
+        return obj
     }
 
     @Override

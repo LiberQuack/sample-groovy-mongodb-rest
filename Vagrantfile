@@ -14,8 +14,8 @@ Vagrant.configure(2) do |config|
   ## Inline script execution
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     apt-get update
-    wget -qO- https://gist.github.com/MartinsThiago/a7e55bbffb7391713388/raw/jdk8_precise.sh | sh
     wget -qO- https://gist.github.com/MartinsThiago/8a6782ad27d7232c23c3/raw/mongodb_precise.sh | sh
+    wget -qO- https://gist.github.com/MartinsThiago/a7e55bbffb7391713388/raw/jdk8_precise.sh | sh
   SHELL
 
   # External script execution
