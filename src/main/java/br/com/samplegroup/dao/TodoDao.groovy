@@ -1,5 +1,6 @@
 package br.com.samplegroup.dao
 
+import com.google.gson.Gson
 import com.mongodb.DBCollection
 
 class TodoDao extends DAO{
@@ -24,8 +25,9 @@ class TodoDao extends DAO{
     }
 
     @Override
-    Object findAll(Object obj) {
-        return null
+    Object findAll() {
+        def docs = collection.find()
+        new Gson().toJson(docs)
     }
 
     @Override

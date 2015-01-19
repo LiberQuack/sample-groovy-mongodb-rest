@@ -14,7 +14,9 @@ class TodoResource extends Resource {
     @Override
     def setup() {
         get("${CONTEXT}", APP_JSON, { req, res ->
-
+            res.status(201)
+            res.type(APP_JSON)
+            todoDao.findAll()
         })
 
         get("${CONTEXT}/:id", APP_JSON, { req, res ->

@@ -9,7 +9,7 @@ abstract class DAO {
 
     abstract Object insert(obj)
     abstract Object find(obj)
-    abstract Object findAll(obj)
+    abstract Object findAll()
     abstract Object remove(obj)
     abstract Object findAndRemove(obj)
     abstract Object update(obj)
