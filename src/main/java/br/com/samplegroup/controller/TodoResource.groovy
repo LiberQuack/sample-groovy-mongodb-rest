@@ -10,6 +10,7 @@ class TodoResource extends Resource {
 
     final String CONTEXT = "/api/v1/todos"
     final TodoDao todoDao = new TodoDao()
+    final Gson gson = new Gson()
 
     @Override
     def setup() {
@@ -24,11 +25,17 @@ class TodoResource extends Resource {
         })
 
         post("${CONTEXT}", APP_JSON, { req, res ->
-            res.status(201)
             res.type(APP_JSON)
-            def todo = new Gson().fromJson(req.body(), Todo.class)
-            def result = todoDao.save(todo)
-            new Gson().toJson(result)
+            def todo = gson.fromJson(req.body(), Todo.class)
+
+            if (todo.getErrors()) {
+                res.status(400)
+                gson.toJson(todo.getErrors())
+            } else {
+                res.status(201)
+                def result = todoDao.save(todo)
+                new Gson().toJson(result)
+            }
         })
 
         put("${CONTEXT}/:id", APP_JSON, { req, res ->
