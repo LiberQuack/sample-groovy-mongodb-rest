@@ -12,8 +12,10 @@ class TodoResource extends Resource {
     final String CONTEXT = "/api/v1/todos"
     final Gson gson = new Gson()
 
-    @Override
-    void setup(DAO dao) {
+    TodoResource(DAO dao) {
+
+        after({ req, res -> res.type(APP_JSON) })
+
         get("${CONTEXT}", APP_JSON, { req, res ->
             res.status(200)
             dao.find()
@@ -45,11 +47,9 @@ class TodoResource extends Resource {
 
         })
 
-        after({ req, res -> res.type(APP_JSON) })
-
         exception(JsonSyntaxException.class, { e, req, res ->
             res.status(400)
-            res.body(e.cause.message)
+            res.body(gson.toJson(e.cause.message))
         })
     }
 }
