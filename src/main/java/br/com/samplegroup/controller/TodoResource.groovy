@@ -1,6 +1,7 @@
 package br.com.samplegroup.controller
 
 import br.com.samplegroup.dao.DAO
+import br.com.samplegroup.interfaces.Transformer
 import br.com.samplegroup.model.Todo
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -10,45 +11,43 @@ import static spark.Spark.*
 class TodoResource {
 
     final String CONTEXT = "/api/v1/todos"
-    final Gson gson = new Gson()
 
-    TodoResource(DAO dao) {
+    TodoResource(DAO dao, Transformer trfm) {
         after({ req, res -> res.type("application/json") })
 
-        get("${CONTEXT}", APP_JSON, { req, res ->
+        get("${CONTEXT}", "application/json", { req, res ->
             res.status(200)
             dao.find()
-        })
+        }, trfm)
 
-        get("${CONTEXT}/:id", APP_JSON, { req, res ->
+        get("${CONTEXT}/:id", "application/json", { req, res ->
             res.status(200)
-            def todo = gson.fromJson(req.body(), Todo.class)
+            def todo = trfm.unrender(req.body(), Todo.class)
             dao.find(todo)
-        })
+        }, trfm)
 
-        post("${CONTEXT}", APP_JSON, { req, res ->
-            def todo = gson.fromJson(req.body(), Todo.class)
+        post("${CONTEXT}", "application/json", { req, res ->
+            def todo = trfm.unrender(req.body(), Todo.class)
             if (todo.getErrors()) {
                 res.status(400)
-                gson.toJson(todo.getErrors())
+                todo.getErrors()
             } else {
                 res.status(201)
-                def result = dao.save(todo)
-                gson.toJson(result)
+                dao.save(todo)
             }
-        })
+        }, trfm)
 
-        put("${CONTEXT}/:id", APP_JSON, { req, res ->
+        put("${CONTEXT}/:id", "application/json", { req, res ->
 
-        })
+        }, trfm)
 
-        delete("${CONTEXT}/:id", APP_JSON, { req, res ->
+        delete("${CONTEXT}/:id", "application/json", { req, res ->
 
-        })
+        }, trfm)
 
         exception(JsonSyntaxException.class, { e, req, res ->
             res.status(400)
-            res.body(gson.toJson(e.cause.message))
+            res.body(trfm.render(e.cause.message))
         })
     }
 }
