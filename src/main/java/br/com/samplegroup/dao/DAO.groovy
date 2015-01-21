@@ -22,7 +22,7 @@ abstract class DAO {
         } else {
             def uri = new MongoClientURI("mongodb://1.0.0.7")
             mongDB = new MongoClient(uri).getDB("todo-app")
-            System.err.print("WARNING, ENVS DB_URL/DB_NAME NOT FOUND, RUNNING AGAINST 1.0.0.7")
+            System.err.println("WARNING, ENVS DB_URL/DB_NAME NOT FOUND, RUNNING AGAINST 1.0.0.7")
         }
         mongDB.setWriteConcern(WriteConcern.SAFE)
         this.db = new Jongo(mongDB)
