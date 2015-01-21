@@ -7,14 +7,13 @@ import com.google.gson.JsonSyntaxException
 
 import static spark.Spark.*
 
-class TodoResource extends Resource {
+class TodoResource {
 
     final String CONTEXT = "/api/v1/todos"
     final Gson gson = new Gson()
 
     TodoResource(DAO dao) {
-
-        after({ req, res -> res.type(APP_JSON) })
+        after({ req, res -> res.type("application/json") })
 
         get("${CONTEXT}", APP_JSON, { req, res ->
             res.status(200)
