@@ -2,13 +2,18 @@ package br.com.samplegroup.dao
 
 import com.google.gson.Gson
 import com.mongodb.*
+import org.jongo.Find
+import org.jongo.FindOne
 import org.jongo.Jongo
 import org.jongo.MongoCollection
+import org.jongo.MongoCursor
+import org.jongo.Oid
 
 abstract class DAO {
 
     Jongo db
     MongoCollection defaultCollection
+    Gson gson = new Gson()
 
     DAO() {
         DB mongDB
@@ -21,30 +26,30 @@ abstract class DAO {
             def host = "127.0.0.1"
             def uri = new MongoClientURI("mongodb://$host")
             mongDB = new MongoClient(uri).getDB("todo-app")
-            System.err.println("WARNING: MAKE SURE YOU RUN [vagrant up] BEFORE STARTING THE APP")
             System.err.println("WARNING: INVALID ENVS DB_URL && DB_NAME, RUNNING AGAINST $host")
         }
         mongDB.setWriteConcern(WriteConcern.SAFE)
         this.db = new Jongo(mongDB)
     }
 
-    List<?> findAll() {
-        this.defaultCollection.find().as(HashMap).asList()
+    Find findAll() {
+        def Cursor = this.defaultCollection.find()
     }
 
-    Object remove(Object obj) {
-        if (!obj._id) {
-            throw new Exception("The Object doesn't have '_id'") //Todo: Need to create a customized Exception
-        }
-        this.defaultCollection.remove("{'_id': '$obj._id'}")
+    Find findAll(Map exactFieldsSearch) {
+        this.defaultCollection.find(toJson(exactFieldsSearch))
     }
 
-    Object findOne(Object obj) {
-        this.defaultCollection.findOne(obj)
+    Find findInIndexedTexts(String search) {
+        this.defaultCollection.find("{\$text: {\$search: \"$search\"}}")
     }
 
-    List<?> findAll(Object obj) {
-        this.defaultCollection.find(toJson(obj)).as(HashMap).asList()
+    FindOne findOne(String _id) {
+        this.defaultCollection.findOne(Oid.withOid(_id))
+    }
+
+    Object remove(String _id) {
+        this.defaultCollection.remove(Oid.withOid(_id))
     }
 
     Object save(Object obj) {
@@ -53,7 +58,6 @@ abstract class DAO {
     }
 
     protected String toJson(Object obj) {
-        def gson = new Gson()
         def json = gson.toJson(obj)
         def hashMap = gson.fromJson(json, HashMap)
         gson.toJson(hashMap.findAll { it.value }) //Todo: Find all should filter sub maps too

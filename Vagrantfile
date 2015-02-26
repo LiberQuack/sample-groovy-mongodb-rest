@@ -4,8 +4,8 @@ Vagrant.configure(2) do |config|
   end
 
   ## Vagrant vm configuration
-  config.vm.box = "hashicorp/precise32"
-  config.vm.network "private_network", ip: "1.0.0.7"
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.network "forwarded_port", guest:27017, host:27017
   config.vm.hostname = 'todos-app'
 
   ## Share folders between your host and vm
@@ -13,9 +13,7 @@ Vagrant.configure(2) do |config|
 
   ## Inline script execution
   config.vm.provision "shell", run: "always", inline: <<-SHELL
-    apt-get update
     wget -qO- https://gist.github.com/MartinsThiago/8a6782ad27d7232c23c3/raw/mongodb_precise.sh | sh
-    wget -qO- https://gist.github.com/MartinsThiago/a7e55bbffb7391713388/raw/jdk8_precise.sh | sh
   SHELL
 
   # External script execution

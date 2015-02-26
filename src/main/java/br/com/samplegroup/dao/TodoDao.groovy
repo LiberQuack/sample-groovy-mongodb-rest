@@ -1,11 +1,11 @@
 package br.com.samplegroup.dao
-//Todo: Move these methods to super DAO
-class TodoDao extends DAO {
 
-    TodoDao() {
+class TodoDAO extends DAO {
+
+    TodoDAO() {
         super()
         this.defaultCollection = db.getCollection("todo")
-        this.defaultCollection.ensureIndex("{title: 1}")
+        this.defaultCollection.ensureIndex("{title: 'text', description: 'text'}")
     }
 
 }
