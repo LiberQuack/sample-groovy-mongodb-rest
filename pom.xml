@@ -74,6 +74,15 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <!--If src/[main|test]/java are empty, this must exist-->
+            <!--Otherwise the project will not be compiled-->
+            <plugin>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.9.1-01</version>
+                <extensions>true</extensions>
+            </plugin>
         </plugins>
     </build>
 
