@@ -35,7 +35,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.3.7</version>
+            <version>2.3.7</version> <!--Should Match groovy-eclipse-batch-->
         </dependency>
         <dependency>
             <groupId>org.jongo</groupId>
