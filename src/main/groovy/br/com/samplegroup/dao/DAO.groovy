@@ -1,13 +1,11 @@
 package br.com.samplegroup.dao
 
 import com.google.gson.Gson
-import com.mongodb.*
-import org.jongo.Find
-import org.jongo.FindOne
-import org.jongo.Jongo
-import org.jongo.MongoCollection
-import org.jongo.MongoCursor
-import org.jongo.Oid
+import com.mongodb.DB
+import com.mongodb.MongoClient
+import com.mongodb.MongoClientURI
+import com.mongodb.WriteConcern
+import org.jongo.*
 
 abstract class DAO {
 
@@ -16,18 +14,9 @@ abstract class DAO {
     Gson gson = new Gson()
 
     DAO() {
-        DB mongDB
-        def url = System.getenv("DB_URL")
-        def dbName = System.getenv("DB_NAME")
-        if (url && dbName) {
-            def uri = new MongoClientURI(url)
-            mongDB = new MongoClient(uri).getDB(dbName)
-        } else {
-            def host = "127.0.0.1"
-            def uri = new MongoClientURI("mongodb://$host")
-            mongDB = new MongoClient(uri).getDB("todo-app")
-            System.err.println("WARNING: INVALID ENVS DB_URL && DB_NAME, RUNNING AGAINST $host")
-        }
+        def url = System.getenv("DB_URL") ?: "mondob://127.0.0.1/todo-app"
+        def uri = new MongoClientURI(url)
+        DB mongDB = new MongoClient(uri).getDB((((url =~ /(?:\/\/.+\/)(.+)/)[0])[1])) //Todo: KISS
         mongDB.setWriteConcern(WriteConcern.SAFE)
         this.db = new Jongo(mongDB)
     }
