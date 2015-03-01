@@ -10,5 +10,5 @@ I started to work with Mongo for the first time with nodejs, it was a great expe
 - Be scalable
 - Have DAOs easy to use
 
-## Running on [Cloud 9] (https://c9.io/)
+## Running on Cloud 9
 - Todo...
