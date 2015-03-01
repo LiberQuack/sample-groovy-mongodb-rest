@@ -14,7 +14,7 @@ abstract class DAO {
     Gson gson = new Gson()
 
     DAO() {
-        def url = System.getenv("DB_URL") ?: "mondob://127.0.0.1/todo-app"
+        def url = System.getenv("DB_URL") ?: "mongodb://127.0.0.1/todo-app"
         def uri = new MongoClientURI(url)
         DB mongDB = new MongoClient(uri).getDB((((url =~ /(?:\/\/.+\/)(.+)/)[0])[1])) //Todo: KISS
         mongDB.setWriteConcern(WriteConcern.SAFE)
@@ -30,7 +30,7 @@ abstract class DAO {
     }
 
     Find findInIndexedTexts(String search) {
-        this.defaultCollection.find("{\$text: {\$search: \"$search\"}}")
+        this.defaultCollection.find("{\$text: {\$search: \"$search\"}}") //TODO: Need to use namedParameters
     }
 
     FindOne findOne(String _id) {
