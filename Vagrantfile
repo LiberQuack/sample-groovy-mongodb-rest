@@ -14,6 +14,10 @@ Vagrant.configure(2) do |config|
   ## Inline script execution
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     wget -qO- https://gist.github.com/MartinsThiago/8a6782ad27d7232c23c3/raw/mongodb_precise.sh | sh
+
+    dummy=`wget -qO- http://beta.json-generator.com/api/json/get/LHF0nzJ`
+    echo "for (var i in $dummy) {db.todo.save($dummy[i])}" > todoInsert.json
+    mongo todo-app todoInsert.json
   SHELL
 
   # External script execution
