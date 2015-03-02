@@ -1,5 +1,6 @@
 package br.com.samplegroup.dao
 
+import br.com.samplegroup.interfaces.IDAO
 import com.google.gson.Gson
 import com.mongodb.DB
 import com.mongodb.MongoClient
@@ -7,10 +8,10 @@ import com.mongodb.MongoClientURI
 import com.mongodb.WriteConcern
 import org.jongo.*
 
-abstract class DAO {
+class DAO implements IDAO{
 
     Jongo db
-    MongoCollection defaultCollection
+    MongoCollection collection
     Gson gson = new Gson()
 
     DAO() {
@@ -21,28 +22,33 @@ abstract class DAO {
         this.db = new Jongo(mongDB)
     }
 
+    DAO(String collection) {
+        DAO()
+        this.collection = db.getCollection(collection)
+    }
+
     Find findAll() {
-        def Cursor = this.defaultCollection.find()
+        def Cursor = this.collection.find()
     }
 
     Find findAll(Map exactFieldsSearch) {
-        this.defaultCollection.find(toJson(exactFieldsSearch))
+        this.collection.find(toJson(exactFieldsSearch))
     }
 
     Find findInIndexedTexts(String search) {
-        this.defaultCollection.find("{\$text: {\$search: \"$search\"}}") //TODO: Need to use namedParameters
+        this.collection.find("{\$text: {\$search: \"$search\"}}") //TODO: Need to use namedParameters
     }
 
     FindOne findOne(String _id) {
-        this.defaultCollection.findOne(Oid.withOid(_id))
+        this.collection.findOne(Oid.withOid(_id))
     }
 
     Object remove(String _id) {
-        this.defaultCollection.remove(Oid.withOid(_id))
+        this.collection.remove(Oid.withOid(_id))
     }
 
     Object save(Object obj) {
-        this.defaultCollection.save(obj)
+        this.collection.save(obj)
         return obj
     }
 

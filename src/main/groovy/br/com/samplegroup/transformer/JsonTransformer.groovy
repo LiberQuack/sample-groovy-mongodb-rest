@@ -1,12 +1,12 @@
 package br.com.samplegroup.transformer
 
-import br.com.samplegroup.interfaces.Transformer
+import br.com.samplegroup.interfaces.ITransformer
 import com.google.gson.Gson
 
 /**
  * Created by martins on 1/21/2015.
  */
-class JsonT implements Transformer{
+class JsonTransformer implements ITransformer{
 
     Gson gson = new Gson()
 

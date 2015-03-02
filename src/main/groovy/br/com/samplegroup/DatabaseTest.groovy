@@ -8,7 +8,7 @@ println "Starting"
 def start = System.currentTimeMillis()
 
 //Execution
-println dao.findAll().as(HashMap).count()
+println dao.defaultCollection.count()
 
 //End
 def end = System.currentTimeMillis()

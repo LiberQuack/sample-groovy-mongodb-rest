@@ -1,7 +1,7 @@
 package br.com.samplegroup.controller
 
 import br.com.samplegroup.dao.DAO
-import br.com.samplegroup.interfaces.Transformer
+import br.com.samplegroup.interfaces.ITransformer
 import br.com.samplegroup.model.Todo
 import com.google.gson.JsonSyntaxException
 
@@ -11,12 +11,12 @@ class TodoResource {
 
     final String CONTEXT = "/api/v1/todos"
 
-    TodoResource(DAO dao, Transformer trfm) {
+    TodoResource(DAO dao, ITransformer trfm) {
         after({ req, res -> res.type("application/json") })
 
         get("$CONTEXT", "application/json", { req, res ->
             res.status(200)
-            dao.findAll()
+            dao.findAll().limit(50).as(Todo).asList()
         }, trfm)
 
         get("$CONTEXT/:id", "application/json", { req, res ->

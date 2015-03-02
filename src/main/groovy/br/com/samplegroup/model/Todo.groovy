@@ -1,8 +1,8 @@
 package br.com.samplegroup.model
 
-import br.com.samplegroup.interfaces.Validator
+import br.com.samplegroup.interfaces.IValidator
 
-class Todo implements Validator {
+class Todo implements IValidator {
 
     String _id
     String title
