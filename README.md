@@ -23,6 +23,7 @@ Within your terminal run the following commands (Ctrl + C) (Ctrl + V)
 wget -qO- https://gist.github.com/MartinsThiago/a7e55bbffb7391713388/raw/jdk8_precise.sh | sh
 wget -qO- https://gist.github.com/MartinsThiago/7d1f3274838103327646/raw/install-maven-3.2.5.sh | sh
 wget -qO- https://gist.github.com/MartinsThiago/486d297e89fbf89b0906/raw/c9_mavenrunner.sh | sh
-mongod --smallfiles
+mongod --smallfiles &
+mvn compile exec:java
 ```
 The command above installs jdk 8, maven 3.2.5, maven runner and starts mongodb
