@@ -7,8 +7,6 @@ import br.com.samplegroup.model.Todo
 import br.com.samplegroup.validator.TodoValidator
 import com.google.gson.JsonSyntaxException
 
-import java.awt.PageAttributes
-
 import static spark.Spark.*
 
 class TodoResource {
@@ -36,11 +34,13 @@ class TodoResource {
         }, trfm)
 
         put("$CONTEXT/:id", "application/json", { req, res ->
-
+            def todo = trfm.unrender(req.body(), Todo)
+            todoValidator.validate(todo)
+            dao.save(todo)
         }, trfm)
 
         delete("$CONTEXT/:id", "application/json", { req, res ->
-
+            dao.remove(req.params("id"))
         }, trfm)
 
         exception(JsonSyntaxException, { e, req, res ->
@@ -48,7 +48,7 @@ class TodoResource {
             res.body(trfm.render(e.cause.message))
         })
 
-        exception(ValidationException, {e, req, res ->
+        exception(ValidationException, { e, req, res ->
             res.status(422)
             res.type("application/json")
             res.body(trfm.render(e.fieldsAndReasons))
