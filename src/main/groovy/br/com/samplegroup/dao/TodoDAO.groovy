@@ -33,7 +33,7 @@ class TodoDAO implements IDAO {
     }
 
     @Override
-    Todo remove(String _id) {
+    Object remove(String _id) {
         dao.remove(_id)
     }
 

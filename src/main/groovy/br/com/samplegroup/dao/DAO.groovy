@@ -46,7 +46,7 @@ class DAO implements IDAO{
     }
 
     Object remove(String _id) {
-        this.collection.remove(withOid(_id))
+        this.collection.remove(withOid(_id)) //Todo: Need to improve this return, WriteResult cant be parsed to JSON
     }
 
     Object save(Object obj) {
