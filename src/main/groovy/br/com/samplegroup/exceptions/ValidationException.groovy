@@ -5,8 +5,8 @@ class ValidationException extends Exception {
     Map fieldsAndReasons
 
     ValidationException(Map fieldsAndReasons, Object invalidObject) {
-        super("The object type of $invalidObject.class is invalid")
-        this.fieldsAndReasons = fieldsAndReasons
+        super("The object type of ${invalidObject.getClass()} is invalid")
+        this.fieldsAndReasons = [errs:fieldsAndReasons]
     }
 
 }

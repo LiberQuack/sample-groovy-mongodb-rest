@@ -8,7 +8,7 @@ class TodoDAO implements IDAO {
     DAO dao
 
     TodoDAO() {
-        this.dao = new DAO().db.getCollection("todo")
+        this.dao = new DAO("todo")
         dao.collection.ensureIndex("{title: 'text', description: 'text'}")
     }
 

@@ -7,6 +7,6 @@ import br.com.samplegroup.exceptions.ValidationException
  */
 interface IValidator {
 
-    void validate() throws ValidationException
+    void validate(Object object) throws ValidationException
 
 }

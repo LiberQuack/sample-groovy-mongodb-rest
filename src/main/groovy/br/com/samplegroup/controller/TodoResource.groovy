@@ -1,39 +1,38 @@
 package br.com.samplegroup.controller
 
-import br.com.samplegroup.dao.DAO
+import br.com.samplegroup.dao.TodoDAO
+import br.com.samplegroup.exceptions.ValidationException
 import br.com.samplegroup.interfaces.ITransformer
 import br.com.samplegroup.model.Todo
+import br.com.samplegroup.validator.TodoValidator
 import com.google.gson.JsonSyntaxException
+
+import java.awt.PageAttributes
 
 import static spark.Spark.*
 
 class TodoResource {
 
     final String CONTEXT = "/api/v1/todos"
+    def todoValidator = new TodoValidator()
 
-    TodoResource(DAO dao, ITransformer trfm) {
+    TodoResource(TodoDAO dao, ITransformer trfm) {
         after({ req, res -> res.type("application/json") })
 
         get("$CONTEXT", "application/json", { req, res ->
             res.status(200)
-            dao.findAll().limit(50).as(Todo).asList()
+            dao.findAll()
         }, trfm)
 
         get("$CONTEXT/:id", "application/json", { req, res ->
             res.status(200)
-            def todo = trfm.unrender(req.body(), Todo.class)
-            dao.findOne(todo)
+            dao.findOne(req.params("id"))
         }, trfm)
 
         post("$CONTEXT", "application/json", { req, res ->
-            def todo = trfm.unrender(req.body(), Todo.class)
-            if (todo.getErrors()) {
-                res.status(400)
-                todo.getErrors()
-            } else {
-                res.status(201)
-                dao.save(todo)
-            }
+            def todo = trfm.unrender(req.body(), Todo)
+            todoValidator.validate(todo)
+            dao.save(todo)
         }, trfm)
 
         put("$CONTEXT/:id", "application/json", { req, res ->
@@ -44,9 +43,15 @@ class TodoResource {
 
         }, trfm)
 
-        exception(JsonSyntaxException.class, { e, req, res ->
+        exception(JsonSyntaxException, { e, req, res ->
             res.status(400)
             res.body(trfm.render(e.cause.message))
+        })
+
+        exception(ValidationException, {e, req, res ->
+            res.status(422)
+            res.type("application/json")
+            res.body(trfm.render(e.fieldsAndReasons))
         })
     }
 }

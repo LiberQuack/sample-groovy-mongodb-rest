@@ -8,6 +8,8 @@ import com.mongodb.MongoClientURI
 import com.mongodb.WriteConcern
 import org.jongo.*
 
+import static org.jongo.Oid.withOid
+
 class DAO implements IDAO{
 
     Jongo db
@@ -23,7 +25,7 @@ class DAO implements IDAO{
     }
 
     DAO(String collection) {
-        DAO()
+        this()
         this.collection = db.getCollection(collection)
     }
 
@@ -40,11 +42,11 @@ class DAO implements IDAO{
     }
 
     FindOne findOne(String _id) {
-        this.collection.findOne(Oid.withOid(_id))
+        this.collection.findOne(withOid(_id))
     }
 
     Object remove(String _id) {
-        this.collection.remove(Oid.withOid(_id))
+        this.collection.remove(withOid(_id))
     }
 
     Object save(Object obj) {
